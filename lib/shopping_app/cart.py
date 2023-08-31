@@ -20,21 +20,18 @@ class Cart:
 
     def check_out(self):
         if self.owner.wallet.balance < self.total_amount():
-            print("You don't have money enough to buy these things.")
+            print("No tienes suficiente dinero para comprar los items.")
             pass
-        if(len(self.items_list()) <= 0):
-            print("The cart is empty.")
-            pass
-        print("The purchase has been complete.")
-        return self.owner.wallet.withdraw(self.total_amount())
-        
-        # Remove the pass when coding the check_out method.
-        # requirements
-        # - The purchase price of all items in the cart (Cart#items) in the cart owner's wallet.
-        # - Elementos del carrito de compras.
-        # - Empty cart (Artículos del carrito).
-        # Tips
-        # - cart owner wallet ==> self.owner.wallet
-        # - Item owner's wallet ==> item.propietario.billetera
-        # - Money is transferred ==> Withdraw that amount from (?) wallet and deposit that amount to (?) wallet
-        # - item ownership transferred to cart owner ==> rewrite owner (item.owner = ?)
+
+        # Transferencia de dinero y propiedad
+        for item in self.items:
+            item_owner_wallet = item.owner.wallet
+            cart_owner_wallet = self.owner.wallet
+            item_owner_wallet.deposit(item.price)
+            cart_owner_wallet.withdraw(item.price)
+            item.set_owner(self.owner)
+
+        # Vaciar el contenido del carrito
+        print("La compra fuer realizada con exito.")
+        self.items = []
+
