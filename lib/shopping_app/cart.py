@@ -1,6 +1,7 @@
+
 class Cart:
     from item_manager import show_items
-
+    from ownable import set_owner
     def __init__(self, owner):
         self.set_owner(owner)
         self.items = []
@@ -19,13 +20,21 @@ class Cart:
 
     def check_out(self):
         if self.owner.wallet.balance < self.total_amount():
-            pass    # check_outメソッドをコーディングする際はpassは削除してください。
-        # 要件
-        #   - カートの中身（Cart#items）のすべてのアイテムの購入金額が、カートのオーナーのウォレットからアイテムのオーナーのウォレットに移されること。
-        #   - カートの中身（Cart#items）のすべてのアイテムのオーナー権限が、カートのオーナーに移されること。
-        #   - カートの中身（Cart#items）が空になること。
-        # ヒント
-        #   - カートのオーナーのウォレット ==> self.owner.wallet
-        #   - アイテムのオーナーのウォレット ==> item.owner.wallet
-        #   - お金が移されるということ ==> (？)のウォレットからその分を引き出して、(？)のウォレットにその分を入金するということ
-        #   - アイテムのオーナー権限がカートのオーナーに移されること ==> オーナーの書き換え（item.owner = ?）
+            print("You don't have money enough to buy these things.")
+            pass
+        if(len(self.items_list()) <= 0):
+            print("The cart is empty.")
+            pass
+        print("The purchase has been complete.")
+        return self.owner.wallet.withdraw(self.total_amount())
+        
+        # Remove the pass when coding the check_out method.
+        # requirements
+        # - The purchase price of all items in the cart (Cart#items) in the cart owner's wallet.
+        # - Elementos del carrito de compras.
+        # - Empty cart (Artículos del carrito).
+        # Tips
+        # - cart owner wallet ==> self.owner.wallet
+        # - Item owner's wallet ==> item.propietario.billetera
+        # - Money is transferred ==> Withdraw that amount from (?) wallet and deposit that amount to (?) wallet
+        # - item ownership transferred to cart owner ==> rewrite owner (item.owner = ?)
